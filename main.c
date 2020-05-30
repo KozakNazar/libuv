@@ -13,7 +13,10 @@
 #endif
 
 // -ldl
-//clang linux compile commande: clang-7 -pthread -lm -ldl -o main async.c core.c dl.c fs-poll.c fs.c getaddrinfo.c getnameinfo.c idna.c inet.c linux-core.c linux-inotify.c linux-syscalls.c loop-watcher.c loop.c main.c pipe.c poll.c process.c procfs-exepath.c proctitle.c random-devurandom.c random-getrandom.c random-sysctl-linux.c random.c signal.c stream.c strscpy.c sysinfo-loadavg.c tcp.c thread.c threadpool.c timer.c tty.c udp.c uv-common.c uv-data-getter-setters.c version.c
+// clang linux compile commande: 
+/* 
+clang-7 -pthread -lm -ldl -Wno-implicit-function-declaration -o main linux_addon/async.c linux_addon/core.c linux_addon/dl.c linux_addon/fs-poll.c linux_addon/fs.c linux_addon/getaddrinfo.c linux_addon/getnameinfo.c linux_addon/idna.c linux_addon/inet.c linux_addon/linux-core.c linux_addon/linux-inotify.c linux_addon/linux-syscalls.c linux_addon/loop-watcher.c linux_addon/loop.c linux_addon/pipe.c linux_addon/poll.c linux_addon/process.c linux_addon/procfs-exepath.c linux_addon/proctitle.c linux_addon/random-devurandom.c linux_addon/random-getrandom.c linux_addon/random-sysctl-linux.c linux_addon/random.c linux_addon/signal.c linux_addon/stream.c linux_addon/strscpy.c linux_addon/sysinfo-loadavg.c linux_addon/tcp.c linux_addon/thread.c linux_addon/threadpool.c linux_addon/timer.c linux_addon/tty.c linux_addon/udp.c linux_addon/uv-common.c linux_addon/uv-data-getter-setters.c linux_addon/version.c main.c
+*/
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -22,7 +25,11 @@
 #if __linux__
 #include <unistd.h>
 #endif
-#include "uv.h"
+#if _WIN32
+#include "windows_addon/uv.h"
+#else // #elif __linux__
+#include "linux_addon/uv.h"
+#endif
 
 #define ATTEMPTS_COUNT 5
 int attemptsDownCount = ATTEMPTS_COUNT;
@@ -241,7 +248,7 @@ void inputHandler(int ch0, int ch1, int ch2, int ch3){
 	//char * hexDigitScanfPattern = (char*)"%[0-9abcdefABCDEF]"; // /[0-9A-Fa-f]/g
 
 	if (currIndex < DIGITS_COUNT && ch0 && sscanf((char*)&ch0, hexDigitScanfPattern, chstr_) > 0) {
-		data[currIndex] = strtol(chstr_, NULL, 16);
+		data[currIndex] = (unsigned char)strtol(chstr_, NULL, 16);
 #if _WIN32
 		printf("%X", data[currIndex]);
 #else // #elif __linux__
