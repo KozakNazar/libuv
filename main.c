@@ -1,6 +1,6 @@
 /********************************************************************************
 * N.Kozak // Lviv'2020 // ACM // event-driven validator example by C(use libuv) *
-*    file: acmiwforhw27.c (renamed to main.c)                                   *
+*    file: acmhw28_2.c (renamed to main.c)                                      *
 *********************************************************************************/
 #define _CRT_SECURE_NO_WARNINGS
 #define WIN32_LEAN_AND_MEAN
